@@ -64,7 +64,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="FindDupFiles.cs" />
-    <Compile Include="foundFiles.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -93,6 +92,16 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FileFunctions\FileFunctions.csproj">
+      <Project>{8A992E8B-E3D0-47EA-B648-EAEE063CE67E}</Project>
+      <Name>FileFunctions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Hashing\Hashing.csproj">
+      <Project>{9CB0FA88-7B64-4BA0-B3B0-EF71964E6B6F}</Project>
+      <Name>Hashing</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

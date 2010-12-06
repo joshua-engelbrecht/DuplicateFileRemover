@@ -1,0 +1,10 @@
+C:\project\DFR\DFR\obj\x86\Release\ResolveAssemblyReference.cache
+C:\project\DFR\DFR\obj\x86\Release\App.baml
+C:\project\DFR\DFR\obj\x86\Release\MainWindow.baml
+C:\project\DFR\DFR\obj\x86\Release\App.g.cs
+C:\project\DFR\DFR\obj\x86\Release\MainWindow.g.cs
+C:\project\DFR\DFR\obj\x86\Release\DFR_MarkupCompile.cache
+C:\project\DFR\DFR\obj\x86\Release\DFR.g.resources
+C:\project\DFR\DFR\obj\x86\Release\DFR.Properties.Resources.resources
+C:\project\DFR\DFR\obj\x86\Release\GenerateResource.read.1.tlog
+C:\project\DFR\DFR\obj\x86\Release\GenerateResource.write.1.tlog

@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Security.Cryptography;
 using System.IO;
-using System.Security.Cryptography; 
 
-namespace DFR
+namespace Hashing
 {
-    class FindDupFiles
+    public class findHash
     {
         /// <summary>
         /// method for getting a files MD5 hash, say for
@@ -15,6 +15,7 @@ namespace DFR
         /// </summary>
         /// <param name="file">the file we want the has from</param>
         /// <returns></returns>
+        /// 
         public string getFilesMD5Hash(string file)
         {
             //MD5 hash provider for computing the hash of the file
@@ -47,5 +48,4 @@ namespace DFR
             return sb.ToString();
         }
     }
-
 }

@@ -1,0 +1,5 @@
+C:\project\DFR\FileFunctions\bin\Debug\FileFunctions.dll
+C:\project\DFR\FileFunctions\bin\Debug\FileFunctions.pdb
+C:\project\DFR\FileFunctions\obj\Debug\ResolveAssemblyReference.cache
+C:\project\DFR\FileFunctions\obj\Debug\FileFunctions.dll
+C:\project\DFR\FileFunctions\obj\Debug\FileFunctions.pdb

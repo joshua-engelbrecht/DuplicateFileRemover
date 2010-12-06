@@ -7,16 +7,16 @@
             <RowDefinition Height="396*" />
             <RowDefinition Height="161*" />
         </Grid.RowDefinitions>
-        <TextBox Height="201" HorizontalAlignment="Left" Margin="12,271,0,0" Name="textBox1" VerticalAlignment="Top" Width="665" VerticalScrollBarVisibility="Auto" Grid.RowSpan="2" />
+        <TextBox Height="201" Margin="12,271,22,0" Name="textBox1" VerticalAlignment="Top" VerticalScrollBarVisibility="Auto" Grid.RowSpan="2" />
         <Button Content="Find Files" Height="23" HorizontalAlignment="Left" Margin="24,117,0,0" Name="button1" VerticalAlignment="Top" Width="75" Click="button1_Click" Grid.Row="1" />
-        <Button Content="Close" Height="23" HorizontalAlignment="Left" Margin="602,117,0,0" Name="button2" VerticalAlignment="Top" Width="75" Click="button2_Click" Grid.Row="1" />
+        <Button Content="Close" Height="23" Margin="0,117,22,0" Name="button2" VerticalAlignment="Top" Click="button2_Click" Grid.Row="1" HorizontalAlignment="Right" Width="75" />
         <StatusBar Height="23" HorizontalAlignment="Left" Margin="12,82,0,0" Name="statusBar1" VerticalAlignment="Top" Width="665" Grid.Row="1" >
             <StatusBarItem>
                 <TextBlock>Status:</TextBlock>
             </StatusBarItem>
         </StatusBar>
-        <ProgressBar Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="56,82,0,0" Name="progressBar1" VerticalAlignment="Top" Width="621" />
+        <ProgressBar Grid.Row="1" Height="23" Margin="56,82,22,0" Name="progressBar1" VerticalAlignment="Top" />
         <Button Content="Clear" Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="116,117,0,0" Name="button3" VerticalAlignment="Top" Width="75" Click="button3_Click" />
-        <TextBox Height="253" HorizontalAlignment="Left" Margin="15,12,0,0" Name="textBox2" VerticalAlignment="Top" Width="662" />
+        <TextBox Height="253" Margin="15,12,22,0" Name="textBox2" VerticalAlignment="Top" />
     </Grid>
 </Window>
