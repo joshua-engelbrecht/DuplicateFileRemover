@@ -5,7 +5,7 @@ using System.Text;
 
 namespace FileFunctions
 {
-    class foundFiles
+    public class fileStruct
     {
         public string fileName { get; set; }
         public string checksum { get; set; }

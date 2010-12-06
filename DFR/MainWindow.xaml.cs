@@ -28,6 +28,7 @@ namespace DFR
         private fileFunctions fFunctions = new fileFunctions();
         private SearchOption dirChoice = SearchOption.AllDirectories;
         private ArrayList listOfFiles = new ArrayList();
+        private CompFiles cmp = new CompFiles();
 
         public MainWindow()
         {
@@ -59,6 +60,9 @@ namespace DFR
                 var fStruct = new fileStruct{ checksum = md5, fileName = file.Name, fullFileName = file.FullName };
                 listOfFiles.Add(fStruct);
             }
+
+            //Sort Files According to Hash
+            listOfFiles.Sort(cmp);
 
             table.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
             table.VerticalAlignment = System.Windows.VerticalAlignment.Top;

@@ -7,7 +7,7 @@ using System.IO;
 
 namespace Hashing
 {
-    public class findHash
+    public class findMD5
     {
         /// <summary>
         /// method for getting a files MD5 hash, say for

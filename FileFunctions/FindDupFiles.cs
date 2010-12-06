@@ -12,7 +12,7 @@ namespace FileFunctions
     {
         public ArrayList dupFiles;
         
-        public void findDups(foundFiles[] files)
+        public void findDups(fileStruct[] files)
         {
             var table = new Hashtable();
             dupFiles = new ArrayList();
@@ -27,7 +27,8 @@ namespace FileFunctions
                 table[item.checksum] = count;
                 if (count >= 2)
                 {
-                    var dupFile = new foundFiles { fileName = item.fileName, 
+                    var dupFile = new fileStruct{
+                        fileName = item.fileName, 
                         checksum = item.checksum, 
                         fullFileName = item.fullFileName, 
                         duplicationNumber = dupNumber++};

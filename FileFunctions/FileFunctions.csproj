@@ -40,9 +40,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="compare.cs" />
     <Compile Include="fileFuncations.cs" />
-    <Compile Include="foundFiles.cs" />
+    <Compile Include="FindDupFiles.cs" />
+    <Compile Include="fileStruct.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Hashing\Hashing.csproj">
+      <Project>{9CB0FA88-7B64-4BA0-B3B0-EF71964E6B6F}</Project>
+      <Name>Hashing</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
