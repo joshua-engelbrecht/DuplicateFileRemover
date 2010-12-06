@@ -3,20 +3,34 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="MainWindow" Height="596" Width="721">
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="396*" />
-            <RowDefinition Height="161*" />
-        </Grid.RowDefinitions>
-        <TextBox Height="201" Margin="12,271,22,0" Name="textBox1" VerticalAlignment="Top" VerticalScrollBarVisibility="Auto" Grid.RowSpan="2" />
-        <Button Content="Find Files" Height="23" HorizontalAlignment="Left" Margin="24,117,0,0" Name="button1" VerticalAlignment="Top" Width="75" Click="button1_Click" Grid.Row="1" />
-        <Button Content="Close" Height="23" Margin="0,117,22,0" Name="button2" VerticalAlignment="Top" Click="button2_Click" Grid.Row="1" HorizontalAlignment="Right" Width="75" />
-        <StatusBar Height="23" HorizontalAlignment="Left" Margin="12,82,0,0" Name="statusBar1" VerticalAlignment="Top" Width="665" Grid.Row="1" >
+        <Button Content="Find Files" Height="23" HorizontalAlignment="Left" Margin="24,513,0,0" Name="findFiles" VerticalAlignment="Top" Width="75" Click="findFiles_Click" TabIndex="6"/>
+        <Button Content="Close" Height="23" Margin="0,513,22,0" Name="button2" VerticalAlignment="Top" Click="button2_Click" HorizontalAlignment="Right" Width="75" TabIndex="8"/>
+        <StatusBar Height="23" HorizontalAlignment="Left" Margin="12,478,0,0" Name="statusBar1" VerticalAlignment="Top" Width="665">
             <StatusBarItem>
                 <TextBlock>Status:</TextBlock>
             </StatusBarItem>
         </StatusBar>
-        <ProgressBar Grid.Row="1" Height="23" Margin="56,82,22,0" Name="progressBar1" VerticalAlignment="Top" />
-        <Button Content="Clear" Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="116,117,0,0" Name="button3" VerticalAlignment="Top" Width="75" Click="button3_Click" />
-        <TextBox Height="253" Margin="15,12,22,0" Name="textBox2" VerticalAlignment="Top" />
+        <ProgressBar Height="23" Margin="56,478,22,0" Name="progressBar1" VerticalAlignment="Top" />
+        <Button Content="Clear" Height="23" HorizontalAlignment="Left" Margin="116,513,0,0" Name="button3" VerticalAlignment="Top" Width="75" Click="button3_Click" TabIndex="7"/>
+        <Label Content="Pattern" Height="28" HorizontalAlignment="Left" Margin="24,42,0,0" Name="label1" VerticalAlignment="Top" />
+        <StackPanel Margin="468,12,64,490">
+            <TextBlock>How to Search:</TextBlock>
+            <RadioButton Name="AllDirs" 
+                         GroupName="searchWhere" 
+                         Content="All Subdirectories" 
+                         Checked="RadioButton_Checked" 
+                         TabIndex="3"/>
+            
+            <RadioButton Name="TopDir"
+                         GroupName="searchWhere" 
+                         Content="Top Level Directory Only" 
+                         Checked="RadioButton_Checked"
+                         TabIndex="4"/>
+        </StackPanel>
+        <TextBox Height="23" HorizontalAlignment="Left" Margin="88,42,0,0" Name="searchPattern" VerticalAlignment="Top" Width="308" TabIndex="5"/>
+        <Label Content="Directory" Height="28" HorizontalAlignment="Left" Margin="24,12,0,0" Name="label2" VerticalAlignment="Top" />
+        <TextBox Name="searchDir" Margin="88,12,0,0" HorizontalAlignment="Left" Width="308" TabIndex="1" Height="23" VerticalAlignment="Top" />
+        <Button Content="..." Height="23" HorizontalAlignment="Left" Margin="402,12,0,0" Name="button4" VerticalAlignment="Top" Width="29" Click="button4_Click" TabIndex="2" />
+        <Grid Name="table" Margin="0,76,0,85" />
     </Grid>
 </Window>
