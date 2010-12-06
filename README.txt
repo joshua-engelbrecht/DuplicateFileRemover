@@ -1,0 +1,1 @@
+DFR (Duplicate File Remover) is an open source project aimed at being the best FREE Duplicate file remover.
