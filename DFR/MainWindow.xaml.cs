@@ -26,6 +26,7 @@ namespace DFR
     public partial class MainWindow : Window
     {
         private fileFunctions fFunctions = new fileFunctions();
+        private FindDuplicateFiles duplicateFiles = new FindDuplicateFiles();
         private SearchOption dirChoice = SearchOption.AllDirectories;
         private ArrayList listOfFiles = new ArrayList();
         private CompFiles cmp = new CompFiles();
@@ -38,8 +39,6 @@ namespace DFR
 
         private void findFiles_Click(object sender, RoutedEventArgs e)
         {
-            
-            //            var listOfFiles = fFunctions.getFiles(searchPattern.Text, searchDir.Text, dirChoice);
             var di = new DirectoryInfo(searchDir.Text);
             var files = di.GetFiles(searchPattern.Text, dirChoice);
 
@@ -63,11 +62,12 @@ namespace DFR
 
             //Sort Files According to Hash
             listOfFiles.Sort(cmp);
-
+            var duplicates = duplicateFiles.findDuplicates(listOfFiles);
+//            var duplicates = listOfFiles;
             table.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
             table.VerticalAlignment = System.Windows.VerticalAlignment.Top;
-            table.ShowGridLines = true;
-            table.Background = new SolidColorBrush(Colors.LightSteelBlue);
+            table.ShowGridLines = false;
+            table.Background = new SolidColorBrush(Colors.White);
             //Build Grid
             ColumnDefinition delCol = new ColumnDefinition();
             ColumnDefinition nameCol = new ColumnDefinition();
@@ -79,6 +79,8 @@ namespace DFR
             table.ColumnDefinitions.Add(fullPathCol);
             table.ColumnDefinitions.Add(groupCol);
 
+            var firstRow = new RowDefinition();
+            table.RowDefinitions.Add(firstRow);
             //Add Column Headers
             TextBlock header1 = new TextBlock();
             header1.Text = "Delete";
@@ -117,38 +119,50 @@ namespace DFR
             table.Children.Add(header4);
 
             var row = 1;
+            
 
-            foreach (fileStruct file in listOfFiles)
+            foreach (fileStruct file in duplicates)
             {
                 var newRow = new RowDefinition();
                 table.RowDefinitions.Add(newRow);
+
                 var chb = new CheckBox();
                 chb.Name = "delete_" + row;
                 chb.VerticalAlignment = System.Windows.VerticalAlignment.Center;
                 chb.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
                 Grid.SetRow(chb, row);
                 Grid.SetColumn(chb, 0);
+                
                 table.Children.Add(chb);
 
                 var name = new TextBox();
+                name.IsReadOnly = true;
+                name.Width = (double)450;
+                name.BorderThickness = new Thickness((double)0);
                 name.Name = "name_" + row;
                 name.Text = file.fileName;
                 name.VerticalAlignment = System.Windows.VerticalAlignment.Center;
-                name.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
+                name.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
                 Grid.SetColumn(name, 1);
                 Grid.SetRow(name, row);
                 table.Children.Add(name);
 
                 var path = new TextBox();
+                path.IsReadOnly = true;
+                path.BorderThickness = new Thickness((double)0);
+                path.Width = (double)450;
                 path.Name = "path_" + row;
                 path.Text = file.fullFileName;
                 path.VerticalAlignment = System.Windows.VerticalAlignment.Center;
-                path.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
+                path.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
                 Grid.SetColumn(path, 2);
                 Grid.SetRow(path, row);
                 table.Children.Add(path);
 
                 var grp = new TextBox();
+                grp.BorderThickness = new Thickness((double)0);
+                grp.IsReadOnly = true;
+                grp.Width = (double)50;
                 grp.Name = "path_" + row;
                 grp.Text = file.duplicationNumber.ToString();
                 grp.VerticalAlignment = System.Windows.VerticalAlignment.Center;
@@ -159,6 +173,7 @@ namespace DFR
 
                 row++;
             }
+
             progressBar1.Value = 0;
         }
 

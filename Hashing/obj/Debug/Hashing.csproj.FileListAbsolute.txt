@@ -1,5 +1,0 @@
-C:\project\DFR\Hashing\bin\Debug\Hashing.dll
-C:\project\DFR\Hashing\bin\Debug\Hashing.pdb
-C:\project\DFR\Hashing\obj\Debug\ResolveAssemblyReference.cache
-C:\project\DFR\Hashing\obj\Debug\Hashing.dll
-C:\project\DFR\Hashing\obj\Debug\Hashing.pdb
