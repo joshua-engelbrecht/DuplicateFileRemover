@@ -31,6 +31,7 @@ namespace DFR
         private bool permanentDelete = false;
         private ArrayList listOfFiles = new ArrayList();
         private CompFiles cmp = new CompFiles();
+        private ArrayList deleteTheseFiles = new ArrayList();
 
         public MainWindow()
         {
@@ -125,9 +126,12 @@ namespace DFR
             foreach (fileStruct file in duplicates)
             {
                 var newRow = new RowDefinition();
+                newRow.Name = "row_" + row.ToString();
                 table.RowDefinitions.Add(newRow);
+
                 var chb = new CheckBox();
                 chb.Name = "delete_" + row;
+                chb.Click += checkbox_Click;
                 chb.VerticalAlignment = System.Windows.VerticalAlignment.Center;
                 chb.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
                 Grid.SetRow(chb, row);
@@ -221,8 +225,36 @@ namespace DFR
         {
             var deleteThese = new ArrayList();
             var numOfRows = table.RowDefinitions.Count;
-            for(var i = 1; i == numOfRows; i++){
+        }
+
+        private void checkbox_Click(object sender, RoutedEventArgs e)
+        {
+            var snd = (CheckBox)sender;
+            var nm = snd.Name;
+            var splits = nm.Split('_');
+            var row = int.Parse(splits[1]);
+            var elements = from UIElement element in table.Children
+                          where element is TextBox &&
+                          Grid.GetRow(element) == row &&
+                          Grid.GetColumn(element) == 2
+                          select element as TextBox;
+            elements.ToList<TextBox>();
+            if (snd.IsChecked == true)
+            {
+                var toAdd = elements.First<TextBox>();
+                deleteTheseFiles.Add(toAdd.Text);
+            }
+            if (snd.IsChecked == false)
+            {
+                var toRemove = elements.First<TextBox>();
+                deleteTheseFiles.Remove(toRemove.Text);
+            }
+            logBlock.Text = "";
+            foreach (string name in deleteTheseFiles)
+            {
+                logBlock.Text += name + "\n";
             }
         }
+
     }
 }
