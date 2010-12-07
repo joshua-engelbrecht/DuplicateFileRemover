@@ -28,6 +28,7 @@ namespace DFR
         private fileFunctions fFunctions = new fileFunctions();
         private FindDuplicateFiles duplicateFiles = new FindDuplicateFiles();
         private SearchOption dirChoice = SearchOption.AllDirectories;
+        private bool permanentDelete = false;
         private ArrayList listOfFiles = new ArrayList();
         private CompFiles cmp = new CompFiles();
 
@@ -163,7 +164,7 @@ namespace DFR
                 grp.BorderThickness = new Thickness((double)0);
                 grp.IsReadOnly = true;
                 grp.Width = (double)50;
-                grp.Name = "path_" + row;
+                grp.Name = "grp_" + row;
                 grp.Text = file.duplicationNumber.ToString();
                 grp.VerticalAlignment = System.Windows.VerticalAlignment.Center;
                 grp.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
@@ -177,17 +178,21 @@ namespace DFR
             progressBar1.Value = 0;
         }
 
-        private void button2_Click(object sender, RoutedEventArgs e)
+        private void closeBtn_Click(object sender, RoutedEventArgs e)
         {
             Close();
         }
 
-        private void button3_Click(object sender, RoutedEventArgs e)
+        private void clearBtn_Click(object sender, RoutedEventArgs e)
         {
+            searchDir.Text = "";
+            searchPattern.Text = "";
+            table.RowDefinitions.Clear();
             progressBar1.Value = 0;
+
         }
 
-        private void button4_Click(object sender, RoutedEventArgs e)
+        private void dirBtn_Click(object sender, RoutedEventArgs e)
         {
             var dialog = new System.Windows.Forms.FolderBrowserDialog();
             System.Windows.Forms.DialogResult result = dialog.ShowDialog();
@@ -195,7 +200,7 @@ namespace DFR
                 searchDir.Text = dialog.SelectedPath;
         }
 
-        private void RadioButton_Checked(object sender, RoutedEventArgs e)
+        private void searchOption_Checked(object sender, RoutedEventArgs e)
         {
             if (TopDir.IsChecked == true)
                 dirChoice = SearchOption.TopDirectoryOnly;
@@ -203,6 +208,19 @@ namespace DFR
                 dirChoice = SearchOption.AllDirectories;
             else
                 dirChoice = SearchOption.AllDirectories;
+        }
+
+        private void moveTo_Checked(object sender, RoutedEventArgs e)
+        {
+            if(toBin.IsChecked == true)
+                permanentDelete = false;
+            if (toGone.IsChecked == true)
+                permanentDelete = false;
+        }
+
+        private void remove_Click(object sender, RoutedEventArgs e)
+        {
+            return;
         }
     }
 }
