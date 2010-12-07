@@ -5,7 +5,7 @@
     <Grid>
         <Button Content="_Find Files" Height="23" HorizontalAlignment="Left" Margin="24,513,0,0" Name="findFiles" VerticalAlignment="Top" Width="75" Click="findFiles_Click" TabIndex="10"/>
         <Button Content="_Close" Height="23" Margin="0,513,22,0" Name="closeBtn" VerticalAlignment="Top" Click="closeBtn_Click" HorizontalAlignment="Right" Width="75" TabIndex="13"/>
-        <StatusBar Height="23" HorizontalAlignment="Left" Margin="12,478,0,0" Name="statusBar1" VerticalAlignment="Top" Width="665">
+        <StatusBar Height="23" HorizontalAlignment="Left" Margin="12,478,0,0" Name="statusBar1" VerticalAlignment="Top" Width="665" Background="Transparent">
             <StatusBarItem>
                 <TextBlock>Status:</TextBlock>
             </StatusBarItem>
@@ -47,5 +47,6 @@
         <Button Content="..." Height="23" HorizontalAlignment="Left" Margin="402,12,0,0" Name="dirBtn" VerticalAlignment="Top" Width="29" Click="dirBtn_Click" TabIndex="2" />
         <Grid Name="table" Margin="0,149,0,85" />
         <Button Content="C_lear" Height="23" Margin="214,513,410,0" Name="clearBtn" VerticalAlignment="Top" Click="clearBtn_Click" TabIndex="12" />
+        <TextBlock Height="118" HorizontalAlignment="Left" Margin="470,12,0,0" Name="logBlock" Text="" VerticalAlignment="Top" Width="207" />
     </Grid>
 </Window>

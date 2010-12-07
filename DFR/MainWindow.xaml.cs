@@ -126,7 +126,6 @@ namespace DFR
             {
                 var newRow = new RowDefinition();
                 table.RowDefinitions.Add(newRow);
-
                 var chb = new CheckBox();
                 chb.Name = "delete_" + row;
                 chb.VerticalAlignment = System.Windows.VerticalAlignment.Center;
@@ -220,7 +219,10 @@ namespace DFR
 
         private void remove_Click(object sender, RoutedEventArgs e)
         {
-            return;
+            var deleteThese = new ArrayList();
+            var numOfRows = table.RowDefinitions.Count;
+            for(var i = 1; i == numOfRows; i++){
+            }
         }
     }
 }
