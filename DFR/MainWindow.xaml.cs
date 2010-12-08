@@ -8,6 +8,7 @@ using System.Collections;
 using Hashing;
 using FileFunctions;
 
+
 namespace DFR
 {
     /// <summary>
@@ -15,7 +16,8 @@ namespace DFR
     /// </summary>
     public partial class MainWindow : Window
     {
-        private fileFunctions _fFunctions = new fileFunctions();
+        private fileFunctions _fileFunctions = new fileFunctions();
+        private RemoveFiles _removeFiles = new RemoveFiles();
         private readonly FindDuplicateFiles _duplicateFiles = new FindDuplicateFiles();
         private SearchOption _dirChoice = SearchOption.AllDirectories;
         private bool _permanentDelete = false;
@@ -26,11 +28,20 @@ namespace DFR
         public MainWindow()
         {
             InitializeComponent();
+            moveOrDelete.Content = "";
         }
         private delegate void UpdateProgressBarDelegate(DependencyProperty dp, Object value);
 
         private void FindFilesClick(object sender, RoutedEventArgs e)
         {
+            if(!Directory.Exists(searchDir.Text)){
+                var msg = "Directory " + searchDir.Text + " does not exists.";
+                MessageBox.Show(msg, "No Such Directory");
+                return;
+            }
+
+            if(string.IsNullOrEmpty(searchPattern.Text))
+                searchPattern.Text = "*";
             var di = new DirectoryInfo(searchDir.Text);
             var files = di.GetFiles(searchPattern.Text, _dirChoice);
 
@@ -52,10 +63,6 @@ namespace DFR
                 _listOfFiles.Add(fStruct);
             }
 
-            //Sort Files According to Hash
-            _listOfFiles.Sort(_cmp);
-            var duplicates = _duplicateFiles.findDuplicates(_listOfFiles);
-//            var duplicates = listOfFiles;
             table.HorizontalAlignment = HorizontalAlignment.Left;
             table.VerticalAlignment = VerticalAlignment.Top;
             table.ShowGridLines = false;
@@ -119,7 +126,10 @@ namespace DFR
             table.Children.Add(header4);
 
             var row = 1;
-            
+
+            //Sort Files According to Hash
+            _listOfFiles.Sort(_cmp);
+            var duplicates = _duplicateFiles.findDuplicates(_listOfFiles);
 
             foreach (fileStruct file in duplicates)
             {
@@ -192,7 +202,9 @@ namespace DFR
         {
             searchDir.Text = "";
             searchPattern.Text = "";
+            logBlock.Text = "";
             table.RowDefinitions.Clear();
+            table.ColumnDefinitions.Clear();
             progressBar1.Value = 0;
 
         }
@@ -220,16 +232,21 @@ namespace DFR
             if(toBin.IsChecked == true)
                 _permanentDelete = false;
             if (toGone.IsChecked == true)
-                _permanentDelete = false;
+                _permanentDelete = true;
         }
 
         private void RemoveClick(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            _removeFiles.removeFiles(_deleteTheseFiles, _permanentDelete);
         }
 
         private void CheckboxClick(object sender, RoutedEventArgs e)
         {
+            if (_permanentDelete)
+                moveOrDelete.Content = "You are Permanently Deleting: \n";
+            else
+                moveOrDelete.Content = "You are Moving to the Recycle Bin: \n";
+
             var snd = (CheckBox)sender;
             var nm = snd.Name;
             var splits = nm.Split('_');
@@ -250,6 +267,9 @@ namespace DFR
                 var toRemove = elements.First();
                 _deleteTheseFiles.Remove(toRemove.Text);
             }
+
+            if(_deleteTheseFiles.Count > 0)
+                remove.IsEnabled = true;
             logBlock.Text = "";
             foreach (string name in _deleteTheseFiles)
             {

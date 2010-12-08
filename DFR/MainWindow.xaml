@@ -11,7 +11,7 @@
             </StatusBarItem>
         </StatusBar>
         <ProgressBar Height="23" Margin="56,478,22,0" Name="progressBar1" VerticalAlignment="Top" />
-        <Button Content="Remov_e" Height="23" HorizontalAlignment="Left" Margin="116,513,0,0" Name="remove" VerticalAlignment="Top" Width="75" Click="RemoveClick" TabIndex="11"/>
+        <Button Content="Remov_e" Height="23" HorizontalAlignment="Left" Margin="602,449,0,0" Name="remove" VerticalAlignment="Top" Width="75" Click="RemoveClick" TabIndex="11" IsEnabled="False"/>
         <Label Content="Pat_tern" Height="28" HorizontalAlignment="Left" Margin="23,42,0,0" Name="label1" VerticalAlignment="Top" TabIndex="3" />
         <StackPanel Margin="88,71,448,427">
             <TextBlock>How to Search:</TextBlock>
@@ -33,7 +33,8 @@
                          GroupName="moveTo" 
                          Content="Move To Recycle Bin" 
                          Checked="MoveToChecked" 
-                         TabIndex="7"/>
+                         TabIndex="7"
+                         />
 
             <RadioButton Name="toGone"
                          GroupName="moveTo" 
@@ -45,8 +46,10 @@
         <Label Content="D_irectory" Height="28" HorizontalAlignment="Left" Margin="24,12,0,0" Name="label2" VerticalAlignment="Top" TabIndex="0" />
         <TextBox Name="searchDir" Margin="88,12,0,0" TabIndex="1" Height="23" VerticalAlignment="Top" HorizontalAlignment="Left" Width="308" />
         <Button Content="..." Height="23" HorizontalAlignment="Left" Margin="402,12,0,0" Name="dirBtn" VerticalAlignment="Top" Width="29" Click="DirBtnClick" TabIndex="2" />
-        <Grid Name="table" Margin="0,149,0,85" />
-        <Button Content="C_lear" Height="23" Margin="214,513,410,0" Name="clearBtn" VerticalAlignment="Top" Click="ClearBtnClick" TabIndex="12" />
-        <TextBlock Height="118" HorizontalAlignment="Left" Margin="470,12,0,0" Name="logBlock" Text="" VerticalAlignment="Top" Width="207" />
+        <Grid Name="table" Margin="0,149,244,85" />
+        <Button Content="C_lear" Height="23" Margin="117,513,0,0" Name="clearBtn" VerticalAlignment="Top" Click="ClearBtnClick" TabIndex="12" HorizontalAlignment="Left" Width="75" />
+        <TextBlock Height="289" HorizontalAlignment="Left" Margin="470,149,0,0" Name="logBlock" Text="" VerticalAlignment="Top" Width="207" />
+        <Label Content="Duplicate Files Found:" Height="28" HorizontalAlignment="Left" Margin="0,125,0,0" Name="label3" VerticalAlignment="Top" />
+        <Label Content="Move" Height="28" HorizontalAlignment="Left" Margin="470,125,0,0" Name="moveOrDelete" VerticalAlignment="Top" />
     </Grid>
 </Window>
