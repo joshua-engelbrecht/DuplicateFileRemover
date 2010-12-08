@@ -1,20 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.IO;
-using Microsoft.Win32;
 using System.Collections;
-using System.Threading;
 using Hashing;
 using FileFunctions;
 
@@ -25,24 +15,24 @@ namespace DFR
     /// </summary>
     public partial class MainWindow : Window
     {
-        private fileFunctions fFunctions = new fileFunctions();
-        private FindDuplicateFiles duplicateFiles = new FindDuplicateFiles();
-        private SearchOption dirChoice = SearchOption.AllDirectories;
-        private bool permanentDelete = false;
-        private ArrayList listOfFiles = new ArrayList();
-        private CompFiles cmp = new CompFiles();
-        private ArrayList deleteTheseFiles = new ArrayList();
+        private fileFunctions _fFunctions = new fileFunctions();
+        private readonly FindDuplicateFiles _duplicateFiles = new FindDuplicateFiles();
+        private SearchOption _dirChoice = SearchOption.AllDirectories;
+        private bool _permanentDelete = false;
+        private readonly ArrayList _listOfFiles = new ArrayList();
+        private readonly CompFiles _cmp = new CompFiles();
+        private readonly ArrayList _deleteTheseFiles = new ArrayList();
 
         public MainWindow()
         {
             InitializeComponent();
         }
-        private delegate void UpdateProgressBarDelegate(System.Windows.DependencyProperty dp, Object value);
+        private delegate void UpdateProgressBarDelegate(DependencyProperty dp, Object value);
 
-        private void findFiles_Click(object sender, RoutedEventArgs e)
+        private void FindFilesClick(object sender, RoutedEventArgs e)
         {
             var di = new DirectoryInfo(searchDir.Text);
-            var files = di.GetFiles(searchPattern.Text, dirChoice);
+            var files = di.GetFiles(searchPattern.Text, _dirChoice);
 
             double value = 0;
             progressBar1.Minimum = 0;
@@ -59,22 +49,22 @@ namespace DFR
                 var findHash = new findMD5();
                 var md5 = findHash.getFilesMD5Hash(file.FullName);
                 var fStruct = new fileStruct{ checksum = md5, fileName = file.Name, fullFileName = file.FullName };
-                listOfFiles.Add(fStruct);
+                _listOfFiles.Add(fStruct);
             }
 
             //Sort Files According to Hash
-            listOfFiles.Sort(cmp);
-            var duplicates = duplicateFiles.findDuplicates(listOfFiles);
+            _listOfFiles.Sort(_cmp);
+            var duplicates = _duplicateFiles.findDuplicates(_listOfFiles);
 //            var duplicates = listOfFiles;
-            table.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
-            table.VerticalAlignment = System.Windows.VerticalAlignment.Top;
+            table.HorizontalAlignment = HorizontalAlignment.Left;
+            table.VerticalAlignment = VerticalAlignment.Top;
             table.ShowGridLines = false;
             table.Background = new SolidColorBrush(Colors.White);
             //Build Grid
-            ColumnDefinition delCol = new ColumnDefinition();
-            ColumnDefinition nameCol = new ColumnDefinition();
-            ColumnDefinition fullPathCol = new ColumnDefinition();
-            ColumnDefinition groupCol = new ColumnDefinition();
+            var delCol = new ColumnDefinition();
+            var nameCol = new ColumnDefinition();
+            var fullPathCol = new ColumnDefinition();
+            var groupCol = new ColumnDefinition();
             
             table.ColumnDefinitions.Add(delCol);
             table.ColumnDefinitions.Add(nameCol);
@@ -84,37 +74,45 @@ namespace DFR
             var firstRow = new RowDefinition();
             table.RowDefinitions.Add(firstRow);
             //Add Column Headers
-            TextBlock header1 = new TextBlock();
-            header1.Text = "Delete";
-            header1.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
-            header1.VerticalAlignment = System.Windows.VerticalAlignment.Center;
+            var header1 = new TextBlock
+                              {
+                                  Text = "Delete",
+                                  HorizontalAlignment = HorizontalAlignment.Center,
+                                  VerticalAlignment = VerticalAlignment.Center
+                              };
 
             Grid.SetColumn(header1, 0);
             Grid.SetRow(header1, 0);
             table.Children.Add(header1);
 
-            var header2 = new TextBlock();
-            header2.Text = "File Name";
-            header2.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
-            header2.VerticalAlignment = System.Windows.VerticalAlignment.Center;
+            var header2 = new TextBlock
+                              {
+                                  Text = "File Name",
+                                  HorizontalAlignment = HorizontalAlignment.Center,
+                                  VerticalAlignment = VerticalAlignment.Center
+                              };
 
             Grid.SetColumn(header2, 1);
             Grid.SetRow(header2, 0);
             table.Children.Add(header2);
 
-            var header3 = new TextBlock();
-            header3.Text = "Full Path";
-            header3.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
-            header3.VerticalAlignment = System.Windows.VerticalAlignment.Center;
+            var header3 = new TextBlock
+                              {
+                                  Text = "Full Path",
+                                  HorizontalAlignment = HorizontalAlignment.Center,
+                                  VerticalAlignment = VerticalAlignment.Center
+                              };
 
             Grid.SetColumn(header3, 2);
             Grid.SetRow(header3, 0);
             table.Children.Add(header3);
 
-            var header4 = new TextBlock();
-            header4.Text = "DFR #";
-            header4.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
-            header4.VerticalAlignment = System.Windows.VerticalAlignment.Center;
+            var header4 = new TextBlock
+                              {
+                                  Text = "DFR #",
+                                  HorizontalAlignment = HorizontalAlignment.Center,
+                                  VerticalAlignment = VerticalAlignment.Center
+                              };
 
             Grid.SetColumn(header4, 3);
             Grid.SetRow(header4, 0);
@@ -125,52 +123,56 @@ namespace DFR
 
             foreach (fileStruct file in duplicates)
             {
-                var newRow = new RowDefinition();
-                newRow.Name = "row_" + row.ToString();
+                var newRow = new RowDefinition {Name = "row_" + row};
                 table.RowDefinitions.Add(newRow);
 
-                var chb = new CheckBox();
-                chb.Name = "delete_" + row;
-                chb.Click += checkbox_Click;
-                chb.VerticalAlignment = System.Windows.VerticalAlignment.Center;
-                chb.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
+                var chb = new CheckBox {Name = "delete_" + row};
+                chb.Click += CheckboxClick;
+                chb.VerticalAlignment = VerticalAlignment.Center;
+                chb.HorizontalAlignment = HorizontalAlignment.Center;
                 Grid.SetRow(chb, row);
                 Grid.SetColumn(chb, 0);
                 
                 table.Children.Add(chb);
 
-                var name = new TextBox();
-                name.IsReadOnly = true;
-                name.Width = (double)450;
-                name.BorderThickness = new Thickness((double)0);
-                name.Name = "name_" + row;
-                name.Text = file.fileName;
-                name.VerticalAlignment = System.Windows.VerticalAlignment.Center;
-                name.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
+                var name = new TextBox
+                               {
+                                   IsReadOnly = true,
+                                   Width = (double) 450,
+                                   BorderThickness = new Thickness(0),
+                                   Name = "name_" + row,
+                                   Text = file.fileName,
+                                   VerticalAlignment = VerticalAlignment.Center,
+                                   HorizontalAlignment = HorizontalAlignment.Left
+                               };
                 Grid.SetColumn(name, 1);
                 Grid.SetRow(name, row);
                 table.Children.Add(name);
 
-                var path = new TextBox();
-                path.IsReadOnly = true;
-                path.BorderThickness = new Thickness((double)0);
-                path.Width = (double)450;
-                path.Name = "path_" + row;
-                path.Text = file.fullFileName;
-                path.VerticalAlignment = System.Windows.VerticalAlignment.Center;
-                path.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
+                var path = new TextBox
+                               {
+                                   IsReadOnly = true,
+                                   BorderThickness = new Thickness(0),
+                                   Width = (double) 450,
+                                   Name = "path_" + row,
+                                   Text = file.fullFileName,
+                                   VerticalAlignment = VerticalAlignment.Center,
+                                   HorizontalAlignment = HorizontalAlignment.Left
+                               };
                 Grid.SetColumn(path, 2);
                 Grid.SetRow(path, row);
                 table.Children.Add(path);
 
-                var grp = new TextBox();
-                grp.BorderThickness = new Thickness((double)0);
-                grp.IsReadOnly = true;
-                grp.Width = (double)50;
-                grp.Name = "grp_" + row;
-                grp.Text = file.duplicationNumber.ToString();
-                grp.VerticalAlignment = System.Windows.VerticalAlignment.Center;
-                grp.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
+                var grp = new TextBox
+                              {
+                                  BorderThickness = new Thickness(0),
+                                  IsReadOnly = true,
+                                  Width = (double) 50,
+                                  Name = "grp_" + row,
+                                  Text = file.duplicationNumber.ToString(),
+                                  VerticalAlignment = VerticalAlignment.Center,
+                                  HorizontalAlignment = HorizontalAlignment.Center
+                              };
                 Grid.SetColumn(grp, 3);
                 Grid.SetRow(grp, row);
                 table.Children.Add(grp);
@@ -181,12 +183,12 @@ namespace DFR
             progressBar1.Value = 0;
         }
 
-        private void closeBtn_Click(object sender, RoutedEventArgs e)
+        private void CloseBtnClick(object sender, RoutedEventArgs e)
         {
             Close();
         }
 
-        private void clearBtn_Click(object sender, RoutedEventArgs e)
+        private void ClearBtnClick(object sender, RoutedEventArgs e)
         {
             searchDir.Text = "";
             searchPattern.Text = "";
@@ -195,7 +197,7 @@ namespace DFR
 
         }
 
-        private void dirBtn_Click(object sender, RoutedEventArgs e)
+        private void DirBtnClick(object sender, RoutedEventArgs e)
         {
             var dialog = new System.Windows.Forms.FolderBrowserDialog();
             System.Windows.Forms.DialogResult result = dialog.ShowDialog();
@@ -203,31 +205,30 @@ namespace DFR
                 searchDir.Text = dialog.SelectedPath;
         }
 
-        private void searchOption_Checked(object sender, RoutedEventArgs e)
+        private void SearchOptionChecked(object sender, RoutedEventArgs e)
         {
             if (TopDir.IsChecked == true)
-                dirChoice = SearchOption.TopDirectoryOnly;
+                _dirChoice = SearchOption.TopDirectoryOnly;
             else if (AllDirs.IsChecked == true)
-                dirChoice = SearchOption.AllDirectories;
+                _dirChoice = SearchOption.AllDirectories;
             else
-                dirChoice = SearchOption.AllDirectories;
+                _dirChoice = SearchOption.AllDirectories;
         }
 
-        private void moveTo_Checked(object sender, RoutedEventArgs e)
+        private void MoveToChecked(object sender, RoutedEventArgs e)
         {
             if(toBin.IsChecked == true)
-                permanentDelete = false;
+                _permanentDelete = false;
             if (toGone.IsChecked == true)
-                permanentDelete = false;
+                _permanentDelete = false;
         }
 
-        private void remove_Click(object sender, RoutedEventArgs e)
+        private void RemoveClick(object sender, RoutedEventArgs e)
         {
-            var deleteThese = new ArrayList();
-            var numOfRows = table.RowDefinitions.Count;
+            throw new NotImplementedException();
         }
 
-        private void checkbox_Click(object sender, RoutedEventArgs e)
+        private void CheckboxClick(object sender, RoutedEventArgs e)
         {
             var snd = (CheckBox)sender;
             var nm = snd.Name;
@@ -238,19 +239,19 @@ namespace DFR
                           Grid.GetRow(element) == row &&
                           Grid.GetColumn(element) == 2
                           select element as TextBox;
-            elements.ToList<TextBox>();
+            elements.ToList();
             if (snd.IsChecked == true)
             {
-                var toAdd = elements.First<TextBox>();
-                deleteTheseFiles.Add(toAdd.Text);
+                var toAdd = elements.First();
+                _deleteTheseFiles.Add(toAdd.Text);
             }
             if (snd.IsChecked == false)
             {
-                var toRemove = elements.First<TextBox>();
-                deleteTheseFiles.Remove(toRemove.Text);
+                var toRemove = elements.First();
+                _deleteTheseFiles.Remove(toRemove.Text);
             }
             logBlock.Text = "";
-            foreach (string name in deleteTheseFiles)
+            foreach (string name in _deleteTheseFiles)
             {
                 logBlock.Text += name + "\n";
             }
