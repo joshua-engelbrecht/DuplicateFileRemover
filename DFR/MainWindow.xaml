@@ -1,19 +1,20 @@
 ﻿<Window x:Class="DFR.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="596" Width="721">
-    <Grid>
-        <Button Content="_Find Files" Height="23" HorizontalAlignment="Left" Margin="24,513,0,0" Name="findFiles" VerticalAlignment="Top" Width="75" Click="FindFilesClick" TabIndex="10"/>
-        <Button Content="_Close" Height="23" Margin="0,513,22,0" Name="closeBtn" VerticalAlignment="Top" Click="CloseBtnClick" HorizontalAlignment="Right" Width="75" TabIndex="13"/>
-        <StatusBar Height="23" HorizontalAlignment="Left" Margin="12,478,0,0" Name="statusBar1" VerticalAlignment="Top" Width="665" Background="Transparent">
-            <StatusBarItem>
-                <TextBlock>Status:</TextBlock>
-            </StatusBarItem>
+        Title="MainWindow" mc:Ignorable="d" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" Height="750" Width="877" xmlns:my="clr-namespace:FileFunctions;assembly=FileFunctions" Loaded="Window_Loaded">
+    <Window.Resources>
+        <CollectionViewSource x:Key="fileStructViewSource" d:DesignSource="{d:DesignInstance my:fileStruct, CreateList=True}" />
+    </Window.Resources>
+    <Grid DataContext="{StaticResource fileStructViewSource}">
+        <Button Content="_Find Files" Height="23" HorizontalAlignment="Left" Margin="24,0,0,12" Name="findFiles" VerticalAlignment="Bottom" Width="75" Click="FindFilesClick" TabIndex="10"/>
+        <Button Content="_Close" Height="23" Margin="0,676,11,0" Name="closeBtn" VerticalAlignment="Top" Click="CloseBtnClick" HorizontalAlignment="Right" Width="75" TabIndex="13"/>
+        <StatusBar Height="23" HorizontalAlignment="Left" Margin="12,641,0,0" Name="statusBar1" VerticalAlignment="Top" Width="832" Background="Transparent">
+            <StatusBarItem></StatusBarItem>
         </StatusBar>
-        <ProgressBar Height="23" Margin="56,478,22,0" Name="progressBar1" VerticalAlignment="Top" />
-        <Button Content="Remov_e" Height="23" HorizontalAlignment="Left" Margin="602,449,0,0" Name="remove" VerticalAlignment="Top" Width="75" Click="RemoveClick" TabIndex="11" IsEnabled="False"/>
+        <ProgressBar Height="23" Margin="88,641,11,0" Name="progressBar1" VerticalAlignment="Top" />
+        <Button Content="Remov_e Selected" Height="23" HorizontalAlignment="Left" Margin="187,676,0,0" Name="remove" VerticalAlignment="Top" Width="100" Click="RemoveClick" TabIndex="11"/>
         <Label Content="Pat_tern" Height="28" HorizontalAlignment="Left" Margin="23,42,0,0" Name="label1" VerticalAlignment="Top" TabIndex="3" />
-        <StackPanel Margin="88,71,448,427">
+        <StackPanel Margin="88,71,593,581">
             <TextBlock>How to Search:</TextBlock>
             <RadioButton Name="AllDirs" 
                          GroupName="searchOption" 
@@ -27,7 +28,7 @@
                          Checked="SearchOptionChecked"
                          TabIndex="6"/>
         </StackPanel>
-        <StackPanel Margin="268,71,268,427">
+        <StackPanel Margin="268,71,448,581">
             <TextBlock>How To Treat Duplicate:</TextBlock>
             <RadioButton Name="toBin" 
                          GroupName="moveTo" 
@@ -46,10 +47,43 @@
         <Label Content="D_irectory" Height="28" HorizontalAlignment="Left" Margin="24,12,0,0" Name="label2" VerticalAlignment="Top" TabIndex="0" />
         <TextBox Name="searchDir" Margin="88,12,0,0" TabIndex="1" Height="23" VerticalAlignment="Top" HorizontalAlignment="Left" Width="308" />
         <Button Content="..." Height="23" HorizontalAlignment="Left" Margin="402,12,0,0" Name="dirBtn" VerticalAlignment="Top" Width="29" Click="DirBtnClick" TabIndex="2" />
-        <Grid Name="table" Margin="0,149,244,85" />
-        <Button Content="C_lear" Height="23" Margin="117,513,0,0" Name="clearBtn" VerticalAlignment="Top" Click="ClearBtnClick" TabIndex="12" HorizontalAlignment="Left" Width="75" />
-        <TextBlock Height="289" HorizontalAlignment="Left" Margin="470,149,0,0" Name="logBlock" Text="" VerticalAlignment="Top" Width="207" />
+        <Button Content="C_lear" Height="23" Margin="105,676,0,0" Name="clearBtn" VerticalAlignment="Top" Click="ClearBtnClick" TabIndex="12" HorizontalAlignment="Left" Width="75" />
         <Label Content="Duplicate Files Found:" Height="28" HorizontalAlignment="Left" Margin="0,125,0,0" Name="label3" VerticalAlignment="Top" />
-        <Label Content="Move" Height="28" HorizontalAlignment="Left" Margin="470,125,0,0" Name="moveOrDelete" VerticalAlignment="Top" />
+        <TextBox Text="" Height="28" HorizontalAlignment="Left" Margin="88,607,0,0" Name="currentFile" VerticalAlignment="Top" Width="523" IsReadOnly="True" BorderThickness="0"/>
+        <Label Content="CurrentFile" HorizontalAlignment="Left" Margin="14,0,0,76" Name="curFileLabel" Height="28" VerticalAlignment="Bottom" />
+        <TextBlock Margin="47,0,0,47" Height="23" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="35">Status:</TextBlock>
+        <ListView ItemsSource="{Binding}" Margin="4,149,0,114" Name="fileStructListView" SelectionMode="Multiple">
+            <ListView.ItemContainerStyle>
+                <Style>
+                    <Setter Property="Control.HorizontalContentAlignment" Value="Stretch" />
+                    <Setter Property="Control.VerticalContentAlignment" Value="Stretch" />
+                </Style>
+            </ListView.ItemContainerStyle>
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn x:Name="duplicationNumberColumn" Header="#" Width="50">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Label Margin="-6,-1" Content="{Binding Path=duplicationNumber, Mode=TwoWay, ValidatesOnExceptions=true, NotifyOnValidationError=true}" Width="50" BorderThickness="0"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn x:Name="fileNameColumn" Header="File Name" Width="auto">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Label Content="{Binding Path=fileName, Mode=TwoWay, ValidatesOnExceptions=true, NotifyOnValidationError=true}"  Width="auto" BorderThickness="0"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn x:Name="fullFileNameColumn" Header="File Path" Width="auto">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Label Margin="-6,-1" Content="{Binding Path=fullFileName, Mode=TwoWay, ValidatesOnExceptions=true, NotifyOnValidationError=true}" Width="auto" BorderThickness="0"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
     </Grid>
 </Window>

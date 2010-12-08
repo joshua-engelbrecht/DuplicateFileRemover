@@ -8,17 +8,17 @@ namespace FileFunctions
 {
     public class RemoveFiles
     {
-        public void removeFiles(ArrayList deleteFiles, bool permanentDelete)
+        public void removeFiles(IList deleteFiles, bool permanentDelete)
         {
-            foreach (string fileName in deleteFiles)
+            foreach (fileStruct file in deleteFiles)
             {
                 if (!permanentDelete)
                 {
-                    FileSystem.DeleteFile(fileName, UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin);
+                    FileSystem.DeleteFile(file.fullFileName, UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin);
                 }
                 else
                 {
-                    FileSystem.DeleteFile(fileName, UIOption.OnlyErrorDialogs, RecycleOption.DeletePermanently);
+                    FileSystem.DeleteFile(file.fullFileName, UIOption.OnlyErrorDialogs, RecycleOption.DeletePermanently);
                 }
             }
         }
