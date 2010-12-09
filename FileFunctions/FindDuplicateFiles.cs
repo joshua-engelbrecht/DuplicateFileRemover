@@ -10,10 +10,14 @@ namespace FileFunctions
 {
     public class FindDuplicateFiles
     {
-        public ArrayList duplicateFiles = new ArrayList();
-        
+        /// <summary>
+        /// Find All the duplicate Files By CheckSum
+        /// </summary>
+        /// <param name="files">ArrayList of Files</param>
+        /// <returns>ArrayList</returns>
         public ArrayList findDuplicates(ArrayList files)
         {
+            var duplicateFiles = new ArrayList();
             var count = 0;
             var duplicateId = 0;
             fileStruct previous = new fileStruct { checksum = "000" };

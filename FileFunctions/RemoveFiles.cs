@@ -8,18 +8,22 @@ namespace FileFunctions
 {
     public class RemoveFiles
     {
-        public void removeFiles(IList deleteFiles, bool permanentDelete)
+        /// <summary>
+        /// Remove the files from the system
+        /// </summary>
+        /// <param name="file">File to be removed</param>
+        /// <param name="permanentDelete">Move to RecycleBin or Just Delete</param>
+        public void removeFiles(fileStruct file, bool permanentDelete)
         {
-            foreach (fileStruct file in deleteFiles)
+            if (!permanentDelete)
             {
-                if (!permanentDelete)
-                {
-                    FileSystem.DeleteFile(file.fullFileName, UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin);
-                }
-                else
-                {
-                    FileSystem.DeleteFile(file.fullFileName, UIOption.OnlyErrorDialogs, RecycleOption.DeletePermanently);
-                }
+                if(FileSystem.FileExists(file.fullPath))
+                    FileSystem.DeleteFile(file.fullPath, UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin);
+            }
+            else
+            {
+                if (FileSystem.FileExists(file.fullPath))
+                    FileSystem.DeleteFile(file.fullPath, UIOption.OnlyErrorDialogs, RecycleOption.DeletePermanently);
             }
         }
     }

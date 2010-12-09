@@ -14,7 +14,7 @@ namespace Hashing
         /// a checksum operation
         /// </summary>
         /// <param name="file">the file we want the has from</param>
-        /// <returns></returns>
+        /// <returns>MD5 of File</returns>
         /// 
         public string getFilesMD5Hash(string file)
         {

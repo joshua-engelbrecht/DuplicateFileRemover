@@ -42,7 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="compare.cs" />
-    <Compile Include="fileFuncations.cs" />
+    <Compile Include="fileFunctions.cs" />
     <Compile Include="FindDuplicateFiles.cs" />
     <Compile Include="fileStruct.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
