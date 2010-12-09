@@ -40,7 +40,7 @@ namespace FileFunctions
         /// <returns>ArrayList</returns>
         public ArrayList sortFilesByCheckSum(ArrayList listOFiles)
         {
-            var cmp = new CompFilesByCheckSum();
+            var cmp = new CompareFilesByCheckSum();
             listOFiles.Sort(cmp);
             return listOFiles;
         }
@@ -55,7 +55,7 @@ namespace FileFunctions
             var upperLimit = 0;
             var startPosition = 1;
 
-            var _cmpByDate = new CompFilesByDate();
+            var _cmpByDate = new CompareFilesByDate();
             var toReturn = new ArrayList();
 
             foreach(fileStruct file in filesToDelete){
