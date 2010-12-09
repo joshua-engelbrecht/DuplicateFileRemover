@@ -23,16 +23,19 @@ namespace DFR
         private bool _permanentDelete = false;
         private bool _stop = false;
         private readonly ArrayList _listOfFiles = new ArrayList();
-        private readonly CompFilesByCheckSum _cmpByCheckSum = new CompFilesByCheckSum();
+        private readonly CompareFilesByCheckSum _compareByCheckSum = new CompareFilesByCheckSum();
+        private readonly CompareFilesByName _compareByFileName = new CompareFilesByName();
         private readonly ArrayList _deleteTheseFiles = new ArrayList();
         private delegate void UpdateProgressBarDelegate(DependencyProperty dp, Object value);
         private delegate void UpdateLabelDelegate(DependencyProperty dp, Object value);
+        private bool _nameOnly = true;
 
         public MainWindow()
         {
             InitializeComponent();
             AllDirs.IsChecked = true;
             toBin.IsChecked = true;
+            NameOnly.IsChecked = true;
         }
 
         private void FindFilesClick(object sender, RoutedEventArgs e)
@@ -76,17 +79,31 @@ namespace DFR
                     System.Windows.Threading.DispatcherPriority.Background,
                     new object[] { TextBox.TextProperty, progressMessage }); 
 
+                
+                var md5 = "";
+                if (!_nameOnly)
+                {
+                    var findHash = new findMD5();
+                    md5 = findHash.getFilesMD5Hash(file.FullName);
+                }
 
-                var findHash = new findMD5();
-                var md5 = findHash.getFilesMD5Hash(file.FullName);
                 var fStruct = new fileStruct{ checksum = md5, fileName = file.Name, fullPath = file.FullName, creationDate=file.CreationTime };
                 _listOfFiles.Add(fStruct);
             }
 
             curFileLabel.Text = "";
-            _listOfFiles.Sort(_cmpByCheckSum);
+            ArrayList duplicates = new ArrayList();
 
-            var duplicates = _duplicateFiles.findDuplicates(_listOfFiles);
+            if (_nameOnly)
+            {
+                _listOfFiles.Sort(_compareByFileName);
+                duplicates = _duplicateFiles.findDuplicatesByFileName(_listOfFiles);
+            }
+            else
+            {
+                _listOfFiles.Sort(_compareByCheckSum);
+                duplicates = _duplicateFiles.findDuplicatesByCheckSum(_listOfFiles);
+            }
 
             foreach(fileStruct file in duplicates){
                 fileStructListView.Items.Add(file);
@@ -138,6 +155,17 @@ namespace DFR
             else
                 _dirChoice = SearchOption.AllDirectories;
         }
+
+        private void SearchNameChecked(object sender, RoutedEventArgs e)
+        {
+            if (NameOnly.IsChecked == true)
+                _nameOnly = true;
+            else if (CheckSum.IsChecked == true)
+                _nameOnly = false;
+            else
+                _nameOnly = true;
+        }
+        
 
         private void MoveToChecked(object sender, RoutedEventArgs e)
         {
